@@ -1,0 +1,477 @@
+
+/* 
+    Created on : 2021/06/24, 18:41:56
+    Copyright © 2021 EugenesWorks:zDGVDzRz.
+    Author     : EugenesWorks(https://eugenesworks.com)
+    This is MITLicense.
+*/
+
+*{
+    user-select: none;
+}
+.select{
+    user-select: auto;
+}
+
+a{
+    text-decoration: none;
+}
+
+.left{
+    text-align: left;
+}
+.right{
+    text-align: right;
+}
+.center{
+    text-align: center;
+    margin: 0 auto;
+}
+
+.margintop50px{
+    margin-top: 50px;
+}
+
+.btn{
+    border: 1px solid black;
+    border-radius: 5px;
+    padding:2px 5px 2px 5px;
+    box-shadow: 3px 3px 3px whitesmoke;
+    color: black;
+}
+.btn:hover{
+    background-color: whitesmoke;
+}
+.btn:active{
+    background-color: pink;
+    box-shadow: none;
+}
+.redbtn{
+    border: 1px solid red;
+    color: red;
+}
+.noborder{
+    border: none;
+}
+.bordersky{
+    border-color: skyblue;
+}
+
+noscript{
+    color: red;
+}
+
+dl{
+    margin-left: 5%;
+    text-align: left;
+}
+
+header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.app-bar{
+    position: relative;
+    z-index: 50;
+    width: 100%;
+    border-bottom: 1px solid whitesmoke;
+}
+.app-bar h1{
+    font-size: medium;
+    margin-left: 10px;
+}
+.app-bar h1:before{
+    content:"";
+    display:inline-block;
+    width:1.5em;
+    height:1.5em;
+    background:url(../img/vnd.microsoft.ico) no-repeat;
+    background-size:contain;
+}
+.app-bar small{
+    font-size: 0.5em;
+    color: wheat;
+}
+
+.radiodiv{
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.radiodiv input{
+    display: none;
+}
+.radiodiv label{
+    display: inline-block;
+    width: 70px;
+    margin: -5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 10pt;
+    border: 1px solid skyblue;
+    background-color: white;
+    color: skyblue;
+}
+.radiodiv label:nth-child(2){
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+.radiodiv label:last-child{
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+.radiodiv label:hover{
+    background: whitesmoke;
+}
+.radiodiv input:checked + label{
+    background-color: skyblue;
+    color: white;
+}
+
+.ng{
+    color: red;
+}
+.ng:after{
+    content: "(不可)";
+    color: red;
+}
+
+.new{}
+.new:after{
+    content:"";
+    display:inline-block;
+    width:1em;
+    height:1em;
+    background:url(../img/info_red_24dp.svg) no-repeat;
+    background-size:contain;
+}
+
+.open_new{}
+.open_new:after{
+    content:"";
+    display:inline-block;
+    width:1em;
+    height:1em;
+    background:url(../img/open_in_new_black_24dp.svg) no-repeat;
+    background-size:contain;
+}
+
+main{
+    text-align: center;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: scroll;
+}
+
+.mctr{
+    width: calc(100% - 10px);
+    margin: 0 auto;
+    height: 80vh;
+    display: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none; 
+}
+.mctr::-webkit-scrollbar {
+        display:none;
+    }
+.mctr img{
+    width: 40%;
+}
+.mctr ul{
+    list-style: none;
+    padding-left: 5px;
+}
+.mctr li{
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-align: left;
+    color: skyblue;
+    box-shadow: 3px 3px 3px whitesmoke;
+}
+.mctr li:hover{
+    background-color: whitesmoke;
+}
+.mctr li:active{
+    background-color: pink;
+    box-shadow: none;
+}
+.mctr:first-child{}
+.mctr:first-child h4{
+    text-align: left;
+}
+.mctr:first-child small{
+    color: skyblue;
+}
+.mctr:nth-child(2){
+    display: block;
+}
+.mctr:last-child{}
+
+.btn-ctr{
+    margin-top: 50px;
+}
+.btn-ctr p{
+    text-align: center;
+}
+.btn-ctr .btn{
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+}
+
+.dsb{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.bigorange{
+    font-size: 25pt;
+    font-weight: bold;
+    color: orangered;
+}
+.allbackimg{
+    background-image: url(../img/recycle.png);
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    background-attachment: local;
+    background-size: 1em;
+}
+.ppbackimg{
+    background-image: url(../img/paper_pet.png);
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    background-attachment: local;
+    background-size: 2em;
+}
+
+.bluebtn{
+    font-size: small;
+    font-weight: normal;
+    color: blue;
+    border: 1px solid blue;
+}
+
+#searchbox input[type="text"]{
+    margin-top: 5%;
+    border: none;
+    border-bottom: solid 1px skyblue;
+    width: 70%;
+    background-color: rgba(0,0,0,0);
+    color: black;
+}
+#searchbox label:before{
+    content:"";
+    display:inline-block;
+    width:1em;
+    height:1em;
+    background:url(../img/search_grey_24dp.svg) no-repeat;
+    background-size:contain;
+}
+#searchbox input[type="text"]:active{
+    outline: none;
+    border-bottom-color: pink;
+}
+#searchbox input[type="text"]:focus{
+    outline: none;
+    border-bottom-color: pink;
+}
+.sl{
+    display: block;
+}
+
+#page-ctr{
+    z-index: 10;
+    width: calc(100% - 30px);
+    height: calc(100vh - 50px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 50px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: white;
+    display: none;
+}
+#page-ctr p:nth-child(2){
+    text-align: right;
+}
+#page-ctr .btn{
+    border: 1px solid skyblue;
+    margin-left: 20px;
+    color: skyblue;
+}
+#page-ctr .redbtn{
+    border: 1px solid red;
+    color: red;
+}
+
+#dialoglay{
+    z-index: 100;
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+}
+.dialog{
+    width: 80%;
+    height: 70%;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 20px;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+}
+.dialog h5{
+    float: left;
+}
+.dialog h5:before{
+    content:"";
+    display:inline-block;
+    width:1.5em;
+    height:1.5em;
+    background:url(../img/vnd.microsoft.ico) no-repeat;
+    background-size:contain;
+}
+.dialog p:nth-child(2){
+    float: right;
+    padding-top: 30px;
+    margin-right: 20px;
+}
+.dialog .btn{
+    color: skyblue;
+    border: 1px solid skyblue;
+    display: block;
+}
+.dialog p:nth-child(3){
+    clear: both;
+    width: 90%;
+    color: grey;
+    text-align: left;
+    margin: 0 auto;
+}
+
+#splash{
+    z-index: 150;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: white;
+    display: block;
+}
+#splash img{
+    width: 50%;
+    margin-top: 50%;
+    margin-left: 20%;
+}
+
+@media screen and (min-width: 812px){
+    .radiodiv{
+        text-align: left;
+        width: calc(100% - 200px);
+        margin-left: 200px;
+    }
+    .radiodiv label{
+        text-align: center;
+    }
+    .radiodiv label:nth-child(2){
+        display: none;
+    }
+    .radiodiv label:nth-child(4){
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
+    }
+    main{
+        overflow: hidden;
+    }
+    #page-ctr{
+        width: calc(100% - 60px);
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    #page-ctr p:nth-child(2){
+        margin-right: 10%;
+    }
+    .mctr{
+        width: calc(100% - 252px);
+        overflow: scroll;
+    }
+    .mctr img{
+        width: 20%;
+    }
+    .mctr li{
+        width: calc(100% - 10px);
+    }
+    .mctr:first-child{
+        float: left;
+        width: 245px;
+        padding-right: 5px;
+        display: block;
+        border-right: 1px solid whitesmoke;
+    }
+    .mctr:nth-child(2){
+        float: left;
+        display: block;
+    }
+    .mctr:last-child{
+        float: left;
+    }
+    .bigorange{
+        margin-left: 10px;
+    }
+    .allbackimg{
+        background-size: 1em;
+    }
+    .ppbackimg{
+        background-size: 2em;
+    }
+    .dsb{
+        padding-left: 20px;
+    }
+    .bluebtn{
+        margin-left: 5%;
+    }
+    #searchbox input[type="text"]{
+        width: 50%;
+    }
+    #resultbox{
+        padding-left: 20px;
+    }
+    footer{
+        clear: both;
+    }
+    .dialog{
+        width: 60%;
+    }
+    #splash img{
+        width: 30%;
+        margin-top: 10%;
+        margin-left: 30%;
+    }
+}
+@media screen and (min-width: 1000px){
+    #page-ctr{
+        width: calc(80% - 60px);
+        border-right: 1px solid whitesmoke;
+    }
+    .mctr{
+        width: calc(80% - 252px);
+        overflow: scroll;
+        border-right: 1px solid whitesmoke;
+    }
+}
