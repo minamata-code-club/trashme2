@@ -13,5 +13,5 @@
         }],
     "Scope": "/trashme2/",
     "start_url": "./index.html",
-    "display":"fullscreen"
+    "display":"standalone"
 }
