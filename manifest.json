@@ -1,0 +1,17 @@
+{
+    "name": "trashme2",
+    "short_name":"trashme",
+    "background_color":"#ffffff",
+    "icons":[{
+            "src":"./pwa256icon.png",
+            "sizes":"256x256",
+            "type":"image/png"
+        },{
+            "src":"./pwa192icon.png",
+            "sizes":"192x192",
+            "type":"image/png"
+        }],
+    "Scope": "/trashme2/",
+    "start_url": "./index.html",
+    "display":"fullscreen"
+}

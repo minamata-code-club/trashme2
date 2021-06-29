@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!--
+ Copyright © 2021 EugenesWorks:zDGVDzRz.
+ author : EugenesWorks(https://eugenesworks.com)
+ This is MITLicense.
+-->
+<html>
+    <head>
+        <title>trashme2</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="trashme2">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="format-detection" content="telephone=no">
+        <link rel="shortcut icon" href="img/vnd.microsoft.ico" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+        <link rel="stylesheet" href="style/index.css">
+        <link rel="manifest" href="manifest.json">
+        <script async src="https://cdn.jsdelivr.net/npm/pwacompat" crossorigin="anonymous"></script>
+        <script>
+            window.addEventListener('load', function () {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('service-worker.js')
+                        .then(function (registration) {
+                            return registration.pushManager.getSubscription().then(function (subscription) {
+                                if (subscription) {
+                                    return subscription;
+                                }
+                                return registration.pushManager.subscribe({
+                                    userVisibleOnly: true
+                                });
+                            });
+                        }).then(function (subscription) {
+                            var endpoint = subscription.endpoint;
+                        }).catch(function (error) {
+                            console.log("serviceWorker error:", error);
+                        });
+                }
+            });
+    </script>
+    </head>
+    <body>
+        <header>
+            <div class="app-bar">
+                <h1>trashme<small> is MITLicense.</small></h1>
+            </div>
+            <noscript>JavaScriptをオンにしてください。</noscript>
+            <div class="radiodiv">
+                <input type="radio" id="info" name="code" onchange="ischecked(this)" /><label for="info" id="infolbl" class="new">情報</label>
+                <input type="radio" id="cal" name="code" onchange="ischecked(this)" checked/><label for="cal">カレンダー</label>
+                <input type="radio" id="method" name="code" onchange="ischecked(this)"/><label for="method">捨て方</label>
+           </div>
+            <div id="page-ctr">
+                <h5 id="page-title"></h5>
+                <p><a class="btn" onclick="backPage()">戻る</a></p>
+            </div>
+        </header>
+        
+        <main>
+            <div id="info-ctr" class="mctr">
+                <h4>最新の情報</h4>
+                <div id="latest"></div>
+                <p class="right"><a class="btn noborder" onclick="nextPage(0,7)"><small>履歴</small></a></p>
+                <ul>
+                    <li onclick="nextPage(0,1)">主な処理困難物</li>
+                    <li onclick="nextPage(0,2)">市内業者一覧</li>
+                    <li onclick="nextPage(0,3)">家電・パソコンリサイクル</li>
+                    <li onclick="nextPage(0,4)">産業廃棄物の区分</li>
+                </ul>
+                <div class="btn-ctr">
+                    <p><a class="btn bordersky" onclick="callAbout()">このアプリについて</a></p>
+                    <p><a class="btn bordersky" onclick="nextPage(0,100)">QRコード表示</a></p>
+                    <p><a class="btn bordersky" onclick="clearDatas()">初期化</a></p>
+                    <p><a id="contact" class="btn bordersky open_new" href="" target="_blank" rel="noopener noreferrer">お問い合わせ</a></p>
+                </div>
+            </div>
+            <div id="cal-ctr" class="mctr"></div>
+            <div id="method-ctr" class="mctr">
+                <div id="searchbox"><label><input type="text" onkeyup="serchKateiList(this.value)" placeholder="キーワードを入力"/></label></div>
+                <ul id="resultbox" onclick="evtcheck()"></ul>
+            </div>
+        </main>
+        
+        <footer>
+            <div id="dialoglay">
+                <div class="dialog">
+                    <h5>trashme</h5>
+                    <p><a class="btn" id="diaclose" onclick="closeDialog()">閉じる</a></p>
+                    <p id="message">テキストイン</p>
+                </div>
+            </div>
+            <div id="splash">
+                <img src="img/splash.png" alt="splash"/>
+            </div>
+        </footer>
+        <script src="js/strings.js"></script>
+        <script src="js/index.js"></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js'></script>
+    </body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+ Copyright © 2021 EugenesWorks:zDGVDzRz.
+ author : EugenesWorks(https://eugenesworks.com)
+ This is MITLicense.
+-->
+<html>
+    <head>
+        <title>trashme2offline</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="trashme2offline">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="format-detection" content="telephone=no">
+        <link rel="shortcut icon" href="img/vnd.microsoft.ico" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+        <link rel="stylesheet" href="style/index.css">
+        <link rel="manifest" href="manifest.json">
+        <script async src="https://cdn.jsdelivr.net/npm/pwacompat" crossorigin="anonymous"></script>
+        <script>
+            window.addEventListener('load', function () {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('service-worker.js')
+                        .then(function (registration) {
+                            return registration.pushManager.getSubscription().then(function (subscription) {
+                                if (subscription) {
+                                    return subscription;
+                                }
+                                return registration.pushManager.subscribe({
+                                    userVisibleOnly: true
+                                });
+                            });
+                        }).then(function (subscription) {
+                            var endpoint = subscription.endpoint;
+                        }).catch(function (error) {
+                            console.log("serviceWorker error:", error);
+                        });
+                }
+            });
+    </script>
+    </head>
+    <body>
+        <div id="splash">
+            <img src="img/splash.png" alt="splash"/>
+            <p class="center"><small>インターネットに接続してご利用下さい。</small></p>
+        </div>
+    </body>
+</html>
