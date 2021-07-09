@@ -1,6 +1,7 @@
 /* 
  *  Copyright © 2021 EugenesWorks:zDGVDzRz.
  *  author : EugenesWorks(https://eugenesworks.com)
+ *  version : 1.1
  *  This is MITLicense.
  */
 
@@ -175,28 +176,30 @@ function setCalender(setting){
                 dashbord = "<p class='redbtn center'>カレンダー情報が更新されていません。</p>";
             }else{
                 var mth = now.getMonth() + 1;
-                var allday = calDatas.alls[idx].split(",")[mth];
-                var ppday = calDatas.pps[idx].split(",")[mth];
-                if(now >= new Date(calDatas.year,mth - 1,allday)){
-                    mth++;
-                    allday = calDatas.alls[idx].split(",")[mth];
+                var amth = mth;
+                var pmth = mth;
+                var allday = calDatas.alls[idx].split(",")[mth - 4];
+                var ppday = calDatas.pps[idx].split(",")[mth - 4];
+                if(now.getTime() >= new Date(calDatas.year,mth - 1,allday).getTime()){
+                    amth++;
+                    allday = calDatas.alls[idx].split(",")[amth - 4];
                 }
-                if(now >= new Date(calDatas.year,mth - 1,ppday)){
-                    mth++;
-                    ppday = calDatas.pps[idx].split(",")[mth];
+                if(now.getTime() >= new Date(calDatas.year,mth - 1,ppday).getTime()){
+                    pmth++;
+                    ppday = calDatas.pps[idx].split(",")[pmth - 4];
                 }
-                var dayslefta = (new Date(calDatas.year,mth - 1,allday) - now);
-                var daysleftp = (new Date(calDatas.year,mth - 1,ppday) - now);
+                var dayslefta = (new Date(calDatas.year,amth - 1,allday) - now);
+                var daysleftp = (new Date(calDatas.year,pmth - 1,ppday) - now);
                 var addcalall = gcal.replace("@TITLE",calDatas.names[idx] + "の全品目収集日");
                 addcalall = addcalall.replace("@DETAIL",calDatas.names[idx] + "の全品目収集日です。午前8時30分までに所定の場所にルールを守って捨てて下さい。");
                 addcalall = addcalall.replace("@LOCN",calDatas.names[idx] + "の全品目収集場所");
-                var alldate = calDatas.year + (mth.toString().length === 1?"0" + mth:mth) + (allday.length === 1?"0" + allday:allday);
+                var alldate = calDatas.year + (amth.toString().length === 1?"0" + amth:amth) + (allday.length === 1?"0" + allday:allday);
                 alldate = alldate + "T060000/" + alldate + "T083000";
                 addcalall = addcalall.replace("@DATE",alldate);
                 var addcalpp = gcal.replace("@TITLE",calDatas.names[idx] + "の紙・ペットボトル収集日");
                 addcalpp = addcalpp.replace("@DETAIL",calDatas.names[idx] + "の全品目収集日です。午前8時30分までに所定の場所にルールを守って捨てて下さい。");
                 addcalpp = addcalpp.replace("@LOCN",calDatas.names[idx] + "の全品目収集場所");
-                var ppdate = calDatas.year + (mth.toString().length === 1?"0" + mth:mth) + (ppday.length === 1?"0" + ppday:ppday);
+                var ppdate = calDatas.year + (pmth.toString().length === 1?"0" + pmth:pmth) + (ppday.length === 1?"0" + ppday:ppday);
                 ppdate = ppdate + "T060000/" + ppdate + "T083000";
                 addcalpp = addcalpp.replace("@DATE",ppdate);
                 
@@ -204,7 +207,7 @@ function setCalender(setting){
                 dashbord += "</p><p class='right'><a class='btn bluebtn' href='" + addcalall + "' target='_blank' rel='noopener noreferrer'>カレンダーに追加</a></p>";
                 dashbord += "<h4 class='left'>次の紙・ペットボトル収集日まで</h4><p class='bigorange ppbackimg'>" + Math.floor(daysleftp / 86400000) + "日";
                 dashbord += "</p><p class='right'><a class='btn bluebtn' href='" + addcalpp + "'  target='_blank' rel='noopener noreferrer'>カレンダーに追加</a></p>";
-                hml = "<p>次の全品目収集日は" + mth + " / " + allday + ",紙・ペットボトル収集日は" + mth + " / " + ppday + "です。</p>";
+                hml = "<p>次の全品目収集日は" + amth + " / " + allday + ",紙・ペットボトル収集日は" + pmth + " / " + ppday + "です。</p>";
             }
             hml += getBurnday(calDatas.names[idx]);
             hml += "<p>廃プラは" + setteiDatas.pla + "です。</p></div>";
