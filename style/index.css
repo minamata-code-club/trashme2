@@ -381,8 +381,11 @@ main{
 }
 #splash img{
     width: 50%;
-    margin-top: 50%;
+    margin-top: 40%;
     margin-left: 20%;
+}
+#splash p{
+    margin: 0 auto;
 }
 
 @media screen and (min-width: 812px){
