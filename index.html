@@ -16,15 +16,6 @@
         <link rel="stylesheet" href="style/index.css">
         <link rel="manifest" href="manifest.json">
         <script async src="https://cdn.jsdelivr.net/npm/pwacompat" crossorigin="anonymous"></script>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-J7XSW582TQ"></script>
-        <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-J7XSW582TQ');
-        </script>
         <script>
             window.addEventListener('load', function () {
                 if ('serviceWorker' in navigator) {
@@ -68,16 +59,16 @@
             <div id="info-ctr" class="mctr">
                 <h4>最新の情報</h4>
                 <div id="latest"></div>
-                <p class="right"><a class="btn noborder" onclick="nextPage(0,7)"><small>履歴</small></a></p>
+                <p class="right"><a class="btn noborder" onclick="nextPage(0,561607134)"><small>履歴</small></a></p>
                 <ul>
-                    <li onclick="nextPage(0,1)">主な処理困難物</li>
-                    <li onclick="nextPage(0,2)">市内業者一覧</li>
-                    <li onclick="nextPage(0,3)">家電・パソコンリサイクル</li>
-                    <li onclick="nextPage(0,4)">産業廃棄物の区分</li>
+                    <li onclick="nextPage(0,1677861383)">主な処理困難物</li>
+                    <li onclick="nextPage(0,297598915)">市内業者一覧</li>
+                    <li onclick="nextPage(0,571384392)">家電・パソコンリサイクル</li>
+                    <li onclick="nextPage(0,519506152)">産業廃棄物の区分</li>
                 </ul>
                 <div class="btn-ctr">
                     <p><a class="btn bordersky" onclick="callAbout()">このアプリについて</a></p>
-                    <p><a class="btn bordersky" onclick="nextPage(0,100)">QRコード表示</a></p>
+                    <p><a class="btn bordersky" onclick="checkupdate()">更新を確認</a></p>
                     <p><a class="btn bordersky" onclick="clearDatas()">初期化</a></p>
                     <p><a id="contact" class="btn bordersky open_new" href="" target="_blank" rel="noopener noreferrer">お問い合わせ</a></p>
                 </div>
@@ -98,13 +89,11 @@
                 </div>
             </div>
             <div id="splash">
-                <p>現在メンテナンス中です。(9月中旬終了予定)</p>
                 <img src="img/splash.png" alt="splash"/>
+                <p><a class="btn bordersky" id="diaclose" onclick="checkupdate()">更新を確認</a></p>
             </div>
         </footer>
         <script src="js/strings.js"></script>
         <script src="js/index.js"></script>
-        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js'></script>
     </body>
 </html>

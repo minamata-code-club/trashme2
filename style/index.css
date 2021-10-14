@@ -13,10 +13,6 @@
     user-select: auto;
 }
 
-p{
-    word-wrap: break-word;
-}
-
 a{
     text-decoration: none;
 }
@@ -58,7 +54,7 @@ a{
     border: none;
 }
 .bordersky{
-    border-color: deepskyblue;
+    border-color: skyblue;
 }
 
 noscript{
@@ -111,14 +107,14 @@ header{
 }
 .radiodiv label{
     display: inline-block;
-    width: 80px;
+    width: 70px;
     margin: -5px;
-    padding-left: 5px;
-    padding-right: 5px;
-    font-size: 11pt;
-    border: 1px solid deepskyblue;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 10pt;
+    border: 1px solid skyblue;
     background-color: white;
-    color: deepskyblue;
+    color: skyblue;
 }
 .radiodiv label:nth-child(2){
     border-top-left-radius: 50px;
@@ -132,7 +128,7 @@ header{
     background: whitesmoke;
 }
 .radiodiv input:checked + label{
-    background-color: deepskyblue;
+    background-color: skyblue;
     color: white;
 }
 
@@ -197,7 +193,7 @@ main{
     margin-top: 5px;
     margin-bottom: 5px;
     text-align: left;
-    color: deepskyblue;
+    color: skyblue;
     box-shadow: 3px 3px 3px whitesmoke;
 }
 .mctr li:hover{
@@ -212,7 +208,7 @@ main{
     text-align: left;
 }
 .mctr:first-child small{
-    color: deepskyblue;
+    color: skyblue;
 }
 .mctr:nth-child(2){
     display: block;
@@ -221,7 +217,6 @@ main{
 
 .btn-ctr{
     margin-top: 50px;
-    padding-bottom: 30px;
 }
 .btn-ctr p{
     text-align: center;
@@ -266,7 +261,7 @@ main{
 #searchbox input[type="text"]{
     margin-top: 5%;
     border: none;
-    border-bottom: solid 1px deepskyblue;
+    border-bottom: solid 1px skyblue;
     width: 70%;
     background-color: rgba(0,0,0,0);
     color: black;
@@ -294,7 +289,7 @@ main{
 #page-ctr{
     z-index: 10;
     width: calc(100% - 30px);
-    height: calc(100vh - 40px);
+    height: calc(100vh - 50px);
     position: absolute;
     top: 0;
     left: 0;
@@ -308,9 +303,9 @@ main{
     text-align: right;
 }
 #page-ctr .btn{
-    border: 1px solid deepskyblue;
+    border: 1px solid skyblue;
     margin-left: 20px;
-    color: deepskyblue;
+    color: skyblue;
 }
 #page-ctr .redbtn{
     border: 1px solid red;
@@ -357,8 +352,8 @@ main{
     margin-right: 20px;
 }
 .dialog .btn{
-    color: deepskyblue;
-    border: 1px solid deepskyblue;
+    color: skyblue;
+    border: 1px solid skyblue;
     display: block;
 }
 .dialog p:nth-child(3){
@@ -381,10 +376,12 @@ main{
 }
 #splash img{
     width: 50%;
-    margin-top: 40%;
+    margin-top: 50%;
     margin-left: 20%;
 }
 #splash p{
+    width: 100%;
+    text-align: center;
     margin: 0 auto;
 }
 

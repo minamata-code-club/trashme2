@@ -1,7 +1,7 @@
 /* 
  *  Copyright © 2021 EugenesWorks:zDGVDzRz.
- *  author : EugenesWorks(https://eugenesworks.com)
- *  version : 1.1
+ *  author   : EugenesWorks(https://eugenesworks.com)
+ *  Version  : 1.0
  *  This is MITLicense.
  */
 
@@ -19,7 +19,7 @@ const NEXTPAGELAY = document.getElementById("page-ctr");
 const RESULTBOX = document.getElementById("resultbox");
 
 const SAVEKEY = "TRASHME2";
-const KONNAN = 1,GYOUSYA = 2,KADEN = 3,SANPAI = 4,KATEI = 5,CAL = 6,JYOUHOU = 7,SETTEI = 8,QRCODE = 100;
+const KONNAN = 1677861383,GYOUSYA = 297598915,KADEN = 571384392,SANPAI = 519506152,KATEI = 1627868233,CAL = 1160243702,JYOUHOU = 561607134,SETTEI = 864168104;
 const GID = "1iEfRBK2hmTxA39yBrqK_AtkKuwd1xNG_zagIxINvMjw";
 
 var gcal = "http://www.google.com/calendar/event?action=TEMPLATE&text=@TITLE&details=@DETAIL&location=@LOCN&dates=@DATE";
@@ -28,7 +28,7 @@ var SAVEVALS = [0,""];
 var kateiDatas = {names:"",genre:"",method:""};
 var calDatas = {year:"",names:"",alls:"",pps:""};
 var jyouhouDatas = {date:"",value:""};
-var setteiDatas = {about:"",contact:"",burn1:"",burn2:"",pla:"",ver:""};
+var setteiDatas = {about:"",contact:"",burn1:"",burn2:"",pla:""};
 
 window.addEventListener("DOMContentLoaded", function(){
     ini();
@@ -44,16 +44,27 @@ window.addEventListener("resize", function(){
 
 function ini(){
     setTimeout( function() {
-        ajaxStart(CAL);
-        ajaxStart(KATEI);
-        ajaxStart(JYOUHOU);
-        ajaxStart(SETTEI);
-    }, 800 );
+        readAllDatas();
+    }, 1500 );
 }
 
-function setupView(PAGE,obj){
-    var data = obj.responseText;
-    analysJson(PAGE,JSON.parse(data));
+async function readAllDatas(){
+    const urls = [CAL,KATEI,JYOUHOU,SETTEI];
+    for (const url of urls) {
+        getV4data(url);
+      }
+}
+
+function getV4data(PAGE){
+    var v4url = "https://docs.google.com/spreadsheets/d/" + GID + "/gviz/tq?tqx=out:json&tq&gid=" + PAGE;
+    var promiss = fetch(v4url);
+    
+    promiss.then(function(res){return res.text();})
+            .then(function(data){setupView(PAGE,data);});
+}
+
+function setupView(PAGE,data){
+    analysJson2(PAGE,data);
     switch(PAGE){
         case KONNAN:
             
@@ -80,6 +91,89 @@ function setupView(PAGE,obj){
             setContact();
             break;
     }
+    return true;
+}
+
+function analysJson2(PAGE,jsonstr){
+    var v = jsonstr.replace("/*O_o*/","");
+    v = v.replace("google.visualization.Query.setResponse","");
+    v = v.replace(/\u203a/g,"※");
+    v = v.substring(2,v.length - 2);
+    var jd = null;
+    jd = JSON.parse(v);
+    if(jd !== null){
+        var rs = jd.table.rows.length,cs = jd.table.rows[0].c.length;
+        var tmpdata = "",tmpv = "",isP = false,ti = -1;
+        if(PAGE !== SETTEI){
+            for(let r = 0;r < rs;r++){
+                for(let c = 0;c < cs;c++){
+                    tmpdata = jd.table.rows[r].c[c];
+                    if(tmpdata !== null){
+                        tmpv = tmpdata.v;
+                        switch(PAGE){
+                            case CAL:
+                                if(r === 0 && c === 0){
+                                    calDatas.year = tmpv;
+                                }else if(r >= 0 && c === 1){
+                                    if(r%2 === 0){
+                                        calDatas.names += tmpv + ",";
+                                    }
+                                }else if(r >= 0 && c >= 1){
+                                    if(c === 2){
+                                        if(tmpv.indexOf("全品目") === -1){
+                                            isP = true;
+                                        }else{
+                                            isP = false;
+                                        }
+                                    }else if(c > 2 && c <= (cs - 1)){
+                                        if(!isP){
+                                            calDatas.alls += tmpv + ",";
+                                        }else if(isP){
+                                            calDatas.pps += tmpv + ",";
+                                        }
+                                    }
+                                    if(c === (cs - 1)){
+                                        if(!isP){
+                                            calDatas.alls += ";";
+                                        }else if(isP){
+                                            calDatas.pps += ";";
+                                        }
+                                    }
+                                }
+                                break;
+                                case KATEI:
+                                    if(r > 0){
+                                        if(c === 1){
+                                            kateiDatas.names += tmpv + ",";
+                                        }else if(c === 2){
+                                            kateiDatas.genre += tmpv + ",";
+                                        }else if(c === 3){
+                                            kateiDatas.method += tmpv + ",";
+                                        }
+                                    }
+                                break;
+                                case JYOUHOU:
+                                    if(c === 1){
+                                        jyouhouDatas.date += tmpv.replace(/,/g,"\/") + ",";
+                                    }else{
+                                        jyouhouDatas.value += tmpv + ",";
+                                    }
+                                break;
+                        }
+                    }
+                }
+            }
+        }else{
+            var c2 = jd.table.cols[3].label.split("@");
+            setteiDatas.about = c2[1].replace(/;/g,"\n");
+            setteiDatas.contact = c2[2];
+            setteiDatas.burn1 = c2[3];
+            setteiDatas.burn2 = c2[4];
+            setteiDatas.pla = c2[5];
+        }
+    }else{
+        callDialog("ERROR:読み込みに失敗しました。");
+    }
 }
 
 function setContact(){
@@ -90,7 +184,7 @@ function setContact(){
 }
 
 function callAbout(){
-    callDialog("Versions" + setteiDatas.ver + "\n\n" + setteiDatas.about);
+    callDialog(setteiDatas.about);
 }
 
 function setupJyouhou(){
@@ -176,30 +270,28 @@ function setCalender(setting){
                 dashbord = "<p class='redbtn center'>カレンダー情報が更新されていません。</p>";
             }else{
                 var mth = now.getMonth() + 1;
-                var amth = mth;
-                var pmth = mth;
-                var allday = calDatas.alls[idx].split(",")[mth - 4];
-                var ppday = calDatas.pps[idx].split(",")[mth - 4];
-                if(now.getTime() >= new Date(calDatas.year,mth - 1,allday).getTime()){
-                    amth++;
-                    allday = calDatas.alls[idx].split(",")[amth - 4];
+                var allday = calDatas.alls[idx].split(",")[mth];
+                var ppday = calDatas.pps[idx].split(",")[mth];
+                if(now >= new Date(calDatas.year,mth - 1,allday)){
+                    mth++;
+                    allday = calDatas.alls[idx].split(",")[mth];
                 }
-                if(now.getTime() >= new Date(calDatas.year,mth - 1,ppday).getTime()){
-                    pmth++;
-                    ppday = calDatas.pps[idx].split(",")[pmth - 4];
+                if(now >= new Date(calDatas.year,mth - 1,ppday)){
+                    mth++;
+                    ppday = calDatas.pps[idx].split(",")[mth];
                 }
-                var dayslefta = (new Date(calDatas.year,amth - 1,allday) - now);
-                var daysleftp = (new Date(calDatas.year,pmth - 1,ppday) - now);
+                var dayslefta = (new Date(calDatas.year,mth - 1,allday) - now);
+                var daysleftp = (new Date(calDatas.year,mth - 1,ppday) - now);
                 var addcalall = gcal.replace("@TITLE",calDatas.names[idx] + "の全品目収集日");
                 addcalall = addcalall.replace("@DETAIL",calDatas.names[idx] + "の全品目収集日です。午前8時30分までに所定の場所にルールを守って捨てて下さい。");
                 addcalall = addcalall.replace("@LOCN",calDatas.names[idx] + "の全品目収集場所");
-                var alldate = calDatas.year + (amth.toString().length === 1?"0" + amth:amth) + (allday.length === 1?"0" + allday:allday);
+                var alldate = calDatas.year + (mth.toString().length === 1?"0" + mth:mth) + (allday.length === 1?"0" + allday:allday);
                 alldate = alldate + "T060000/" + alldate + "T083000";
                 addcalall = addcalall.replace("@DATE",alldate);
                 var addcalpp = gcal.replace("@TITLE",calDatas.names[idx] + "の紙・ペットボトル収集日");
                 addcalpp = addcalpp.replace("@DETAIL",calDatas.names[idx] + "の全品目収集日です。午前8時30分までに所定の場所にルールを守って捨てて下さい。");
                 addcalpp = addcalpp.replace("@LOCN",calDatas.names[idx] + "の全品目収集場所");
-                var ppdate = calDatas.year + (pmth.toString().length === 1?"0" + pmth:pmth) + (ppday.length === 1?"0" + ppday:ppday);
+                var ppdate = calDatas.year + (mth.toString().length === 1?"0" + mth:mth) + (ppday.length === 1?"0" + ppday:ppday);
                 ppdate = ppdate + "T060000/" + ppdate + "T083000";
                 addcalpp = addcalpp.replace("@DATE",ppdate);
                 
@@ -207,7 +299,7 @@ function setCalender(setting){
                 dashbord += "</p><p class='right'><a class='btn bluebtn' href='" + addcalall + "' target='_blank' rel='noopener noreferrer'>カレンダーに追加</a></p>";
                 dashbord += "<h4 class='left'>次の紙・ペットボトル収集日まで</h4><p class='bigorange ppbackimg'>" + Math.floor(daysleftp / 86400000) + "日";
                 dashbord += "</p><p class='right'><a class='btn bluebtn' href='" + addcalpp + "'  target='_blank' rel='noopener noreferrer'>カレンダーに追加</a></p>";
-                hml = "<p>次の全品目収集日は" + amth + " / " + allday + ",紙・ペットボトル収集日は" + pmth + " / " + ppday + "です。</p>";
+                hml = "<p>次の全品目収集日は" + mth + " / " + allday + ",紙・ペットボトル収集日は" + mth + " / " + ppday + "です。</p>";
             }
             hml += getBurnday(calDatas.names[idx]);
             hml += "<p>廃プラは" + setteiDatas.pla + "です。</p></div>";
@@ -288,13 +380,6 @@ function nextPage(n,sw){
         var html = '<iframe style="width:100%;height:70vh;" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTJ9nN_5EsINp7M1_QzYYWfx29D7Hu-3LQ76lhYxlU3PqnaeGx7xqVpgbwmFw1llQAH4xSQFsx5_e4f/pubhtml?gid=519506152&amp;single=true&amp;widget=true&amp;headers=false"></iframe>';
         NEXTPAGELAY.insertAdjacentHTML("beforeend",html);
         NEXTPAGELAY.style.display = "block";
-    }else if(QRCODE){
-        title.innerText = "リンク表示";
-        var thislink =  location.href;
-        var html = '<p><small>' + thislink + '</small></p><div id="qr" class="center"></div>';
-        NEXTPAGELAY.insertAdjacentHTML("beforeend",html);
-        NEXTPAGELAY.style.display = "block";
-        jQuery('#qr').qrcode({width:250,height:250,text:thislink,});
     }
 }
 
@@ -353,103 +438,6 @@ function getBurnday(key0){
     return str;
 }
 
-function analysJson(PAGE,json){
-    var fsize = json.feed.entry.length;
-    var content = "";
-    var tmpcts = new Array();
-    var tmps = new Array();
-    for(let i = 0;i < fsize;i++){
-        content = json.feed.entry[i].content.$t;
-        switch(PAGE){
-            case CAL:
-                if(i === 0){
-                    calDatas.year = json.feed.entry[i].title.$t;
-                }
-                tmpcts = content.split(",");
-                for(let c =  0;c < tmpcts.length;c++){
-                    tmps = tmpcts[c].split(":",2);
-                    if(c === 0){
-                        if(calDatas.names.indexOf(tmps[1].trim()) === -1){
-                            calDatas.names += tmps[1].trim() + ",";
-                        }
-                    }else if(c > 1){
-                        if(content.indexOf("全品目") !== -1){
-                            calDatas.alls += tmps[1].trim() + ",";
-                        }else{
-                            calDatas.pps += tmps[1].trim() + ",";
-                        }
-                    }
-                }
-                if(content.indexOf("全品目") !== -1){
-                    calDatas.alls += ";";
-                }else{
-                    calDatas.pps += ";";
-                }
-                break;
-            case KATEI:
-                tmpcts = content.split(",");
-                for(let c =  0;c < tmpcts.length;c++){
-                    tmps = tmpcts[c].split(":",2);
-                    if(c === 0){
-                        kateiDatas.names += tmps[1].trim() + ",";
-                    }else if(c === 1){
-                        kateiDatas.genre += tmps[1].trim() + ",";
-                    }else{
-                        kateiDatas.method += tmps[1].trim() + ",";
-                    }
-                }
-                break;
-            case JYOUHOU:
-                tmpcts = content.split(",");
-                for(let c =  0;c < tmpcts.length;c++){
-                    tmps = tmpcts[c].split(":",2);
-                    if(c === 0){
-                        jyouhouDatas.date += tmps[1].trim() + ",";
-                    }else{
-                        jyouhouDatas.value += tmps[1].trim() + ",";
-                    }
-                }
-                break;
-            case SETTEI:
-                tmpcts = content.split(",");
-                for(let c =  0;c < tmpcts.length;c++){
-                    tmps = tmpcts[c].split(":");
-                    if(i === 0){
-                        setteiDatas.about = tmps[1].replace(/;/g,"\n");
-                    }else if(i === 1){
-                        setteiDatas.contact = "https:" + tmps[2];
-                    }else if(i === 2){
-                        setteiDatas.burn1 = tmps[1];
-                    }else if(i === 3){
-                        setteiDatas.burn2 = tmps[1];
-                    }else if(i === 4){
-                        setteiDatas.pla = tmps[1];
-                    }else if(i === 5){
-                        setteiDatas.ver = tmps[1];
-                    }
-                }
-                break;
-        }
-    }
-}
-
-function ajaxStart(PAGE){
-    var httpobj = new XMLHttpRequest();
-        if(httpobj){
-            httpobj.onreadystatechange = function(){
-                if(httpobj.readyState === 4 && httpobj.status === 200){
-                    setupView(PAGE,httpobj);
-                }else if(httpobj.readyState === 4 && httpobj.status === 0){
-                        callDialog("ERROR:読み込みに失敗しました。");
-                }
-            };
-            httpobj.open("get",getGSjsonURL(PAGE));
-            httpobj.send(null);
-        }else{
-            callDialog("ERROR:ブラウザが対応していません。");
-        }
-}
-
 function callDialog(message){
     if(message.indexOf("ERROR:") === 0){
         DIALOGMESSAGE.style.color = "red";
@@ -461,11 +449,6 @@ function callDialog(message){
 function closeDialog(){
     DIALOGMESSAGE.innerText = "";
     DIALOGLAY.style.display = "none";
-}
-
-function getGSjsonURL(i){
-    var url = "https://spreadsheets.google.com/feeds/list/" + GID + "/" + i + "/public/values?alt=json";
-    return url;
 }
 
 function checkNewInfo(){
@@ -519,4 +502,12 @@ function checkMobile(){
             INFOLAY.style.display = "none";
         }
     }
+}
+
+function checkupdate(){
+    navigator.serviceWorker.getRegistration()
+      .then(registration => {
+        registration.update();
+        location.reload(true);
+      });
 }
