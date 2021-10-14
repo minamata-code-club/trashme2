@@ -4,8 +4,8 @@
  *  This is MITLicense.
  */
 
-var CACHE_VERSION = 'tm2cash-v2';
-var DISP_VERSION = 'tm2cash-d-v2';
+var CACHE_VERSION = 'tm2cash-v3';
+var DISP_VERSION = 'tm2cash-d-v3';
 
 var resources = [
   'offline.html',
