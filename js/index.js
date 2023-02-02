@@ -259,8 +259,8 @@ function setCalender(setting){
     }
     if(setting.length !== 0 && SAVEVALS[1].length > 0){
         checkNewInfo();
-        var location = SAVEVALS[1];
-        var idx = calDatas.names.indexOf(location);
+        var locationname = SAVEVALS[1];
+        var idx = calDatas.names.indexOf(locationname);
         if(idx > -1){
             var dashbord = "";
             var hml = "";
@@ -271,18 +271,25 @@ function setCalender(setting){
             }else{
                 var mth = now.getMonth() + 1;
                 var mmth = now.getMonth() + 1;
-                var allday = calDatas.alls[idx].split(",")[mth - 4];
-                var ppday = calDatas.pps[idx].split(",")[mmth - 4];
-                if(now >= new Date(calDatas.year,mth - 1,allday)){
+                var offsetmth = mth<4?-8:4;
+                var allday = calDatas.alls[idx].split(",")[mth - offsetmth];
+                var ppday = calDatas.pps[idx].split(",")[mmth - offsetmth];
+                if(now >= new Date(calDatas.year + (now.getFullYear() > calDatas.year?1:0),mth - 1,allday)){
                     mth++;
-                    allday = calDatas.alls[idx].split(",")[mth - 4];
+                    allday = calDatas.alls[idx].split(",")[mth - offsetmth];
                 }
-                if(now >= new Date(calDatas.year,mmth - 1,ppday)){
+                if(now >= new Date(calDatas.year + (now.getFullYear() > calDatas.year?1:0),mmth - 1,ppday)){
                     mmth++;
-                    ppday = calDatas.pps[idx].split(",")[mmth - 4];
+                    ppday = calDatas.pps[idx].split(",")[mmth - offsetmth];
                 }
                 var dayslefta = (new Date(calDatas.year,mth - 1,allday) - now);
+                if(now.getFullYear() > calDatas.year){
+                    dayslefta = (new Date(calDatas.year+1,mth - 1,allday) - now);
+                }
                 var daysleftp = (new Date(calDatas.year,mmth - 1,ppday) - now);
+                if(now.getFullYear() > calDatas.year){
+                    daysleftp = (new Date(calDatas.year+1,mmth - 1,ppday) - now);
+                }
                 var addcalall = gcal.replace("@TITLE",calDatas.names[idx] + "の全品目収集日");
                 addcalall = addcalall.replace("@DETAIL",calDatas.names[idx] + "の全品目収集日です。午前8時30分までに所定の場所にルールを守って捨てて下さい。");
                 addcalall = addcalall.replace("@LOCN",calDatas.names[idx] + "の全品目収集場所");
@@ -306,7 +313,7 @@ function setCalender(setting){
             }
             hml += getBurnday(calDatas.names[idx]);
             hml += "<p>廃プラは" + setteiDatas.pla + "です。</p></div>";
-            html = "<h3>" + calDatas.year + "年度 " + location + "</h3>" + dashbord + "<div class='left'>" + hml + "</div>" + html;
+            html = "<h3>" + calDatas.year + "年度 " + locationname + "</h3>" + dashbord + "<div class='left'>" + hml + "</div>" + html;
         }else{
             html = "<h5>" + calDatas.year + "年度</h5>" + html;
             html = "<img src='img/mylocation.svg' alt=''/><p>あなたが住んでいる区を登録しましょう。</p>" + html;
