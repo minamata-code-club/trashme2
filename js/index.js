@@ -95,6 +95,7 @@ function setupView(PAGE,data){
 }
 
 function analysJson2(PAGE,jsonstr){
+    var sectionOne = true;
     var v = jsonstr.replace("/*O_o*/","");
     v = v.replace("google.visualization.Query.setResponse","");
     v = v.replace(/\u203a/g,"※");
@@ -114,7 +115,14 @@ function analysJson2(PAGE,jsonstr){
                             case CAL:
                                 if(r === 0 && c === 0){
                                     calDatas.year = tmpv;
-                                }else if(r >= 0 && c === 1){
+                                }else if(r === 34 && c === 0){
+                                    if(parseInt(calDatas.year) < parseInt(tmpv)){
+                                        sectionOne = false;
+                                        calDatas.year = tmpv;
+                                        calDatas.alls = "";
+                                        calDatas.pps = "";
+                                    }
+                                }else if((r >= 0 && r < 34) && c === 1){
                                     if(r%2 === 0){
                                         calDatas.names += tmpv + ",";
                                     }
@@ -125,14 +133,14 @@ function analysJson2(PAGE,jsonstr){
                                         }else{
                                             isP = false;
                                         }
-                                    }else if(c > 2 && c <= (cs - 1)){
+                                    }else if(c > 2 && c <= (cs - 2)){
                                         if(!isP){
                                             calDatas.alls += tmpv + ",";
                                         }else if(isP){
                                             calDatas.pps += tmpv + ",";
                                         }
                                     }
-                                    if(c === (cs - 1)){
+                                    if(c === (cs - 2)){
                                         if(!isP){
                                             calDatas.alls += ";";
                                         }else if(isP){
