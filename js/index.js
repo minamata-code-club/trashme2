@@ -1,7 +1,7 @@
 /* 
  *  Copyright © 2021 EugenesWorks:zDGVDzRz.
  *  author   : EugenesWorks(https://eugenesworks.com)
- *  Version  : 1.1
+ *  Version  : 1.5
  *  This is MITLicense.
  */
 
@@ -29,6 +29,8 @@ var kateiDatas = {names:"",genre:"",method:""};
 var calDatas = {year:"",names:"",alls:"",pps:""};
 var jyouhouDatas = {date:"",value:""};
 var setteiDatas = {about:"",contact:"",burn1:"",burn2:"",pla:""};
+var setteiMotos = new Array();
+var oldInfo = "";
 
 window.addEventListener("DOMContentLoaded", function(){
     ini();
@@ -173,6 +175,7 @@ function analysJson2(PAGE,jsonstr){
             }
         }else{
             var c2 = jd.table.cols[3].label.split("@");
+            setteiMotos = c2;
             setteiDatas.about = c2[1].replace(/;/g,"\n");
             setteiDatas.contact = c2[2];
             setteiDatas.burn1 = c2[3];
@@ -253,6 +256,13 @@ function checkbeginer(){
 function setCalender(setting){
     CALLAY.scrollTop = 0;
     CALLAY.innerHTML = "";
+    var dashbord = "";
+    var now = new Date();
+    var date = new Date(calDatas.year,"4","1");
+    if(now.getFullYear() > date.getFullYear()){
+        oldInfo = "<p class='redbtn center'>カレンダー情報が更新されていません。表示されている情報は古い可能性があります。</p>";
+        dashbord = oldInfo;
+    }
     var html = "<ol onclick='evtcheck()'>";
     if(calDatas.names.length !== 0){
         if(!Array.isArray(calDatas.names)){
@@ -270,64 +280,58 @@ function setCalender(setting){
         var locationname = SAVEVALS[1];
         var idx = calDatas.names.indexOf(locationname);
         if(idx > -1){
-            var dashbord = "";
             var hml = "";
-            var now = new Date();
-            var date = new Date(calDatas.year,"12","31");
-            if(now.getFullYear() > date.getFullYear()){
-                dashbord = "<p class='redbtn center'>カレンダー情報が更新されていません。</p>";
-            }else{
-                var mth = now.getMonth() + 1;
-                var mmth = now.getMonth() + 1;
-                var offsetmth = mth<4?-8:4;
-                var allday = calDatas.alls[idx].split(",")[mth - offsetmth];
-                var ppday = calDatas.pps[idx].split(",")[mmth - offsetmth];
-                if(now >= new Date(calDatas.year + (now.getFullYear() > calDatas.year?1:0),mth - 1,allday)){
-                    mth++;
-                    allday = calDatas.alls[idx].split(",")[mth - offsetmth];
-                }
-                if(now >= new Date(calDatas.year + (now.getFullYear() > calDatas.year?1:0),mmth - 1,ppday)){
-                    mmth++;
-                    ppday = calDatas.pps[idx].split(",")[mmth - offsetmth];
-                }
-                var dayslefta = (new Date(calDatas.year,mth - 1,allday) - now);
-                if(now.getFullYear() > calDatas.year){
-                    dayslefta = (new Date(calDatas.year+1,mth - 1,allday) - now);
-                }
-                var daysleftp = (new Date(calDatas.year,mmth - 1,ppday) - now);
-                if(now.getFullYear() > calDatas.year){
-                    daysleftp = (new Date(calDatas.year+1,mmth - 1,ppday) - now);
-                }
-                var addcalall = gcal.replace("@TITLE",calDatas.names[idx] + "の全品目収集日");
-                addcalall = addcalall.replace("@DETAIL",calDatas.names[idx] + "の全品目収集日です。午前8時30分までに所定の場所にルールを守って捨てて下さい。");
-                addcalall = addcalall.replace("@LOCN",calDatas.names[idx] + "の全品目収集場所");
-                var alldate = calDatas.year + (mth.toString().length === 1?"0" + mth:mth) + (allday.length === 1?"0" + allday:allday);
-                alldate = alldate + "T060000/" + alldate + "T083000";
-                addcalall = addcalall.replace("@DATE",alldate);
-                var addcalpp = gcal.replace("@TITLE",calDatas.names[idx] + "の紙・ペットボトル収集日");
-                addcalpp = addcalpp.replace("@DETAIL",calDatas.names[idx] + "の全品目収集日です。午前8時30分までに所定の場所にルールを守って捨てて下さい。");
-                addcalpp = addcalpp.replace("@LOCN",calDatas.names[idx] + "の全品目収集場所");
-                var ppdate = calDatas.year + (mmth.toString().length === 1?"0" + mmth:mmth) + (ppday.length === 1?"0" + ppday:ppday);
-                ppdate = ppdate + "T060000/" + ppdate + "T083000";
-                addcalpp = addcalpp.replace("@DATE",ppdate);
-                
-                var adeff = Math.floor(dayslefta / 86400000);
-                var pdeff = Math.floor(daysleftp / 86400000);
-                dashbord = "<div class='dsb'><h4 class='left'>次の全品目収集日まで</h4><p class='bigorange allbackimg'>" + (adeff===0?"明":(adeff + 1)) + "日";
-                dashbord += "</p><p class='right'><a class='btn bluebtn' href='" + addcalall + "' target='_blank' rel='noopener noreferrer'>カレンダーに追加</a></p>";
-                dashbord += "<h4 class='left'>次の紙・ペットボトル収集日まで</h4><p class='bigorange ppbackimg'>" + (pdeff===0?"明":(pdeff + 1)) + "日";
-                dashbord += "</p><p class='right'><a class='btn bluebtn' href='" + addcalpp + "'  target='_blank' rel='noopener noreferrer'>カレンダーに追加</a></p>";
-                hml = "<p>次の全品目収集日は" + mth + " / " + allday + ",紙・ペットボトル収集日は" + mmth + " / " + ppday + "です。</p>";
+            var mth = now.getMonth() + 1;
+            var mmth = now.getMonth() + 1;
+            var offsetmth = mth<4?-8:4;
+            var allday = calDatas.alls[idx].split(",")[mth - offsetmth];
+            var ppday = calDatas.pps[idx].split(",")[mmth - offsetmth];
+            if(now >= new Date(calDatas.year + (now.getFullYear() > calDatas.year?1:0),mth - 1,allday)){
+                mth++;
+                allday = calDatas.alls[idx].split(",")[mth - offsetmth];
             }
+            if(now >= new Date(calDatas.year + (now.getFullYear() > calDatas.year?1:0),mmth - 1,ppday)){
+                mmth++;
+                ppday = calDatas.pps[idx].split(",")[mmth - offsetmth];
+            }
+            var dayslefta = (new Date(calDatas.year,mth - 1,allday) - now);
+            if(now.getFullYear() > calDatas.year){
+                dayslefta = (new Date(calDatas.year+1,mth - 1,allday) - now);
+            }
+            var daysleftp = (new Date(calDatas.year,mmth - 1,ppday) - now);
+            if(now.getFullYear() > calDatas.year){
+                daysleftp = (new Date(calDatas.year+1,mmth - 1,ppday) - now);
+            }
+            var addcalall = gcal.replace("@TITLE",calDatas.names[idx] + "の全品目収集日");
+            addcalall = addcalall.replace("@DETAIL",calDatas.names[idx] + "の全品目収集日です。午前8時30分までに所定の場所にルールを守って捨てて下さい。");
+            addcalall = addcalall.replace("@LOCN",calDatas.names[idx] + "の全品目収集場所");
+            var alldate = calDatas.year + (mth.toString().length === 1?"0" + mth:mth) + (allday.length === 1?"0" + allday:allday);
+            alldate = alldate + "T060000/" + alldate + "T083000";
+            addcalall = addcalall.replace("@DATE",alldate);
+            var addcalpp = gcal.replace("@TITLE",calDatas.names[idx] + "の紙・ペットボトル収集日");
+            addcalpp = addcalpp.replace("@DETAIL",calDatas.names[idx] + "の全品目収集日です。午前8時30分までに所定の場所にルールを守って捨てて下さい。");
+            addcalpp = addcalpp.replace("@LOCN",calDatas.names[idx] + "の全品目収集場所");
+            var ppdate = calDatas.year + (mmth.toString().length === 1?"0" + mmth:mmth) + (ppday.length === 1?"0" + ppday:ppday);
+            ppdate = ppdate + "T060000/" + ppdate + "T083000";
+            addcalpp = addcalpp.replace("@DATE",ppdate);
+
+            var adeff = Math.floor(dayslefta / 86400000);
+            var pdeff = Math.floor(daysleftp / 86400000);
+            dashbord += "<div class='dsb'><h4 class='left'>次の全品目収集日まで</h4><p class='bigorange allbackimg'>" + (adeff===0?"明":(adeff + 1)) + "日";
+            dashbord += "</p><p class='right'><a class='btn bluebtn' href='" + addcalall + "' target='_blank' rel='noopener noreferrer'>カレンダーに追加</a></p>";
+            dashbord += "<h4 class='left'>次の紙・ペットボトル収集日まで</h4><p class='bigorange ppbackimg'>" + (pdeff===0?"明":(pdeff + 1)) + "日";
+            dashbord += "</p><p class='right'><a class='btn bluebtn' href='" + addcalpp + "'  target='_blank' rel='noopener noreferrer'>カレンダーに追加</a></p>";
+            hml = "<p>次の全品目収集日は" + mth + " / " + allday + ",紙・ペットボトル収集日は" + mmth + " / " + ppday + "です。</p>";
             hml += getBurnday(calDatas.names[idx]);
             hml += "<p>廃プラは" + setteiDatas.pla + "です。</p></div>";
+            hml += "<p><a class='btn redbtn' onclick='nextPage("+ idx +"," + CAL + ")'>詳しい情報をみる</a>";
             html = "<h3>" + calDatas.year + "年度 " + locationname + "</h3>" + dashbord + "<div class='left'>" + hml + "</div>" + html;
         }else{
             html = "<h5>" + calDatas.year + "年度</h5>" + html;
             html = "<img src='img/mylocation.svg' alt=''/><p>あなたが住んでいる区を登録しましょう。</p>" + html;
         }
     }else{
-        html = "<h5>" + calDatas.year + "年度</h5>" + html;
+        html = dashbord + "<h5>" + calDatas.year + "年度</h5>" + html;
         html = "<img src='img/mylocation.svg' alt=''/><p>あなたが住んでいる区を登録しましょう。</p>" + html;
     }
     CALLAY.insertAdjacentHTML("afterbegin",html);
@@ -349,6 +353,8 @@ function nextPage(n,sw){
         title.innerText = calDatas.names[n];
         var html = "<h5>" + calDatas.names[n] + "</h5>";
         html += "<p><a class='btn redbtn' onclick='savelocasion("+ n +")'>この区を端末に登録する</a><a class='btn' onclick='backPage()'>戻る</a></p>";
+        html += "<h5>" + calDatas.year + "年度</h5>";
+        html += oldInfo;
         html += "<h6>全品目</h6><p>";
         var all = "";
         var pp = "";
