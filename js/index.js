@@ -1,7 +1,7 @@
 /* 
  *  Copyright © 2021 EugenesWorks:zDGVDzRz.
  *  author   : EugenesWorks(https://eugenesworks.com)
- *  Version  : 1.5
+ *  Version  : 1.6
  *  This is MITLicense.
  */
 
@@ -352,7 +352,15 @@ function nextPage(n,sw){
         NEXTPAGELAY.innerHTML = "";
         title.innerText = calDatas.names[n];
         var html = "<h5>" + calDatas.names[n] + "</h5>";
-        html += "<p><a class='btn redbtn' onclick='savelocasion("+ n +")'>この区を端末に登録する</a><a class='btn' onclick='backPage()'>戻る</a></p>";
+        var idx = -1;
+        if(SAVEVALS[1].length > 0){
+            idx = calDatas.names.indexOf(SAVEVALS[1]);
+        }
+        var recbtn = "<p><a class='btn redbtn' onclick='savelocasion("+ n +")'>この区を端末に登録する</a>";
+        if(idx > -1 && idx === n){
+            recbtn = "<p><a class='btn kurobtn' onclick='clearDatas2()'>この区を登録解除する</a>";
+        }
+        html += recbtn + "<a class='btn' onclick='backPage()'>戻る</a></p>";
         html += "<h5>" + calDatas.year + "年度</h5>";
         html += oldInfo;
         html += "<h6>全品目</h6><p>";
@@ -378,7 +386,7 @@ function nextPage(n,sw){
     }else if(sw === JYOUHOU){
         title.innerText = "情報履歴";
         var html = "<dl>";
-        for(let d = 0;d < jyouhouDatas.date.length;d++){
+        for(let d = 1;d < jyouhouDatas.date.length;d++){
             html += "<dt>" + jyouhouDatas.date[d] + "</dt><dd>" + jyouhouDatas.value[d] + "</dd>";
         }
         html += "</dl>";
@@ -431,7 +439,12 @@ function loadDatas(){
 function clearDatas(){
     localStorage.removeItem(SAVEKEY);
     setCalender("");
+    SAVEVALS = [0,""];
     callDialog("情報の閲覧データと区の登録データを削除しました。");
+}
+function clearDatas2(){
+    backPage();
+    clearDatas();
 }
 
 function getBurnday(key0){

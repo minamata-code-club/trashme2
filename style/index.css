@@ -50,6 +50,10 @@ a{
     border: 1px solid red;
     color: red;
 }
+.kurobtn{
+    border: 1px solid grey;
+    color: grey;
+}
 .noborder{
     border: none;
 }
@@ -310,6 +314,10 @@ main{
 #page-ctr .redbtn{
     border: 1px solid red;
     color: red;
+}
+#page-ctr .kurobtn{
+    border: 1px solid grey;
+    color: grey;
 }
 
 #dialoglay{
